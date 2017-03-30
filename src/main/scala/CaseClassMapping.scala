@@ -31,6 +31,8 @@ class Users(tag: Tag) extends Table[User](tag, "USERS") {
   def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
   // The name can't be null
   def name = column[String]("NAME")
+  //Todo: notNull not support???
+//  def name = column[String]("NAME", O.NotNull)
   // the * projection (e.g. select * ...) auto-transforms the tupled
   // column values to / from a User
   def * = (name, id.?) <> (User.tupled, User.unapply)
