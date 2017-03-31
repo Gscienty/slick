@@ -79,7 +79,7 @@ object HelloSlick extends App {
         coffees.filter(_.price > 9.0)
 
       // Print the SQL for the filter query
-      println("Generated SQL for filter query:\n" + filterQuery.result.statements)
+      println("=================Generated SQL for filter query:\n" + filterQuery.result.statements)
 
       // Execute the query and print the Seq of results
       db.run(filterQuery.result.map(println))
@@ -94,7 +94,7 @@ object HelloSlick extends App {
       val updateAction: DBIO[Int] = updateQuery.update(1)
 
       // Print the SQL for the Coffees update query
-      println("Generated SQL for Coffees update:\n" + updateQuery.updateStatement)
+      println("=================Generated SQL for Coffees update:\n" + updateQuery.updateStatement)
 
       // Perform the update
       db.run(updateAction.map { numUpdatedRows =>
@@ -112,7 +112,7 @@ object HelloSlick extends App {
       val deleteAction = deleteQuery.delete
 
       // Print the SQL for the Coffees delete query
-      println("Generated SQL for Coffees delete:\n" + deleteAction.statements)
+      println("=================Generated SQL for Coffees delete:\n" + deleteAction.statements)
 
       // Perform the delete
       db.run(deleteAction).map { numDeletedRows =>
@@ -126,7 +126,7 @@ object HelloSlick extends App {
       val sortByPriceQuery: Query[Coffees, (String, Int, Double, Int, Int), Seq] =
         coffees.sortBy(_.price)
 
-      println("Generated SQL for query sorted by price:\n" +
+      println("=================Generated SQL for query sorted by price:\n" +
         sortByPriceQuery.result.statements)
 
       // Execute the query
@@ -139,7 +139,7 @@ object HelloSlick extends App {
       val composedQuery: Query[Rep[String], String, Seq] =
         coffees.sortBy(_.name).take(3).filter(_.price > 9.0).map(_.name)
 
-      println("Generated SQL for composed query:\n" +
+      println("=================Generated SQL for composed query:\n" +
         composedQuery.result.statements)
 
       // Execute the composed query
@@ -152,10 +152,10 @@ object HelloSlick extends App {
       // Join the tables using the relationship defined in the Coffees table
       val joinQuery: Query[(Rep[String], Rep[String]), (String, String), Seq] = for {
         c <- coffees if c.price > 9.0
-        s <- c.supplier
+        s <- suppliers if c.supID === s.id
       } yield (c.name, s.name)
 
-      println("Generated SQL for the join query:\n" + joinQuery.result.statements)
+      println("=================Generated SQL for the join query:\n" + joinQuery.result.statements)
 
       // Print the rows which contain the coffee name and the supplier name
       db.run(joinQuery.result).map(println)
@@ -167,7 +167,7 @@ object HelloSlick extends App {
       // Create a new computed column that calculates the max price
       val maxPriceColumn: Rep[Option[Double]] = coffees.map(_.price).max
 
-      println("Generated SQL for max price column:\n" + maxPriceColumn.result.statements)
+      println("=================Generated SQL for max price column:\n" + maxPriceColumn.result.statements)
 
       // Execute the computed value query
       db.run(maxPriceColumn.result).map(println)
@@ -182,7 +182,7 @@ object HelloSlick extends App {
       // Construct a SQL statement manually with an interpolated value
       val plainQuery = sql"select SUP_NAME from SUPPLIERS where STATE = $state".as[String]
 
-      println("Generated SQL for plain query:\n" + plainQuery.statements)
+      println("=================Generated SQL for plain query:\n" + plainQuery.statements)
 
       // Execute the query
       db.run(plainQuery).map(println)
