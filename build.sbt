@@ -16,3 +16,30 @@ libraryDependencies ++= List(
 )
 
 fork in run := true
+
+
+// code generation task
+lazy val slick = TaskKey[Seq[File]]("gen-tables")
+lazy val slickCodeGenTask = (sourceManaged, dependencyClasspath in Compile, runner in Compile, streams) map { (dir,
+                                                                                                               cp,
+                                                                                                               r,
+                                                                                                               s) =>
+
+  val outputDir = (dir / "slick").getPath // place generated files in sbt's managed sources folder
+val genArray = Array(
+  "slick.jdbc.PostgresProfile",
+  "org.postgresql.Driver",
+  "jdbc:postgresql://127.0.0.1:5432/mme_commerce",
+  outputDir,
+  "com.jeff",
+  "postgres",
+  "111111"
+)
+  toError(r.run("slick.codegen.SourceCodeGenerator", cp.files, genArray, s.log))
+  val fname = outputDir + "/com/jeff/Tables.scala"
+  Seq(file(fname))
+}
+
+slick <<= slickCodeGenTask // register manual sbt command
+//sourceGenerators in Compile <+= slickCodeGenTask // register automatic code generation on every compile, remove for only manual use
+

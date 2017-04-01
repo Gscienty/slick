@@ -1,16 +1,16 @@
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 // Demonstrates various ways of reading data
 object QueryActions extends App {
 
   // A simple dictionary table with keys and values
-  class Dict(tag: Tag) extends Table[(Int, String)](tag, "INT_DICT") {
-    def key = column[Int]("KEY", O.PrimaryKey)
-    def value = column[String]("VALUE")
+  class Dict(tag: Tag) extends Table[(Int, String)](tag, "int_dict") {
+    def key = column[Int]("key", O.PrimaryKey)
+    def value = column[String]("value")
     def * = (key, value)
   }
   val dict = TableQuery[Dict]

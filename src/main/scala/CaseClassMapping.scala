@@ -1,7 +1,8 @@
+import slick.jdbc.PostgresProfile.api._
+
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
-import slick.jdbc.PostgresProfile.api._
 
 object CaseClassMapping extends App {
 
@@ -15,8 +16,9 @@ object CaseClassMapping extends App {
       users.schema.create,
 
       // insert two User instances
-      users += User("John Doe"),
-      users += User("Fred Smith"),
+      users += User(Some("John Doe")),
+      users += User(Some("John Doe"), Some(100)),
+      users += User(),
 
       // print the users (select * from USERS)
       users.result.map(println)
@@ -24,15 +26,14 @@ object CaseClassMapping extends App {
   } finally db.close
 }
 
-case class User(name: String, id: Option[Int] = None)
+case class User(name: Option[String] = None,
+                id: Option[Int] = None)
 
-class Users(tag: Tag) extends Table[User](tag, "USERS") {
+class Users(tag: Tag) extends Table[User](tag, "users") {
   // Auto Increment the id primary key column
-  def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
+  def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
   // The name can't be null
-  def name = column[String]("NAME")
-  //Todo: notNull not support???
-//  def name = column[String]("NAME", O.NotNull)
+  def name = column[Option[String]]("name")
   // the * projection (e.g. select * ...) auto-transforms the tupled
   // column values to / from a User
   def * = (name, id.?) <> (User.tupled, User.unapply)
