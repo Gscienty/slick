@@ -1,3 +1,4 @@
+
 name := """slick"""
 
 scalaVersion := "2.11.8"
@@ -12,10 +13,19 @@ libraryDependencies ++= List(
   "org.postgresql" % "postgresql" % "9.3-1102-jdbc4",
   "redis.clients" % "jedis" % "2.8.1",
   "io.jsonwebtoken" % "jjwt" % "0.7.0",
+  "org.flywaydb" % "flyway-core" % "4.0",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
 
 fork in run := true
+
+
+flywayLocations := Seq("classpath:db/migration")
+
+flywayUrl := "jdbc:postgresql://127.0.0.1:5432/mme_commerce"
+flywayUser := "postgres"
+flywayPassword := "111111"
+
 
 
 // code generation task
