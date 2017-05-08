@@ -1,8 +1,9 @@
-import scala.concurrent.{Future, Await}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
 import slick.basic.DatabasePublisher
 import slick.jdbc.PostgresProfile.api._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 // The main application
 object HelloSlick extends App {
@@ -89,9 +90,9 @@ object HelloSlick extends App {
       /* Update */
 
       // Construct an update query with the sales column being the one to update
-      val updateQuery: Query[Rep[Int], Int, Seq] = coffees.map(_.sales)
+      val updateQuery = coffees.filter(_.total > 2).map(c => (c.price, c.sales, c.name))
 
-      val updateAction: DBIO[Int] = updateQuery.update(1)
+      val updateAction: DBIO[Int] = updateQuery.update(2.0, 1, "jeff")
 
       // Print the SQL for the Coffees update query
       println("=================Generated SQL for Coffees update:\n" + updateQuery.updateStatement)

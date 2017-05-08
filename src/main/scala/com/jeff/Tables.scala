@@ -2,7 +2,6 @@ package com.jeff
 
 import java.sql.Timestamp
 import java.util.{Date, UUID}
-
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -12,14 +11,14 @@ object Tables extends {
 /** Slick data model trait for extension, choice of backend or usage in the cake pattern. (Make sure to initialize this late.) */
 trait Tables {
   val profile: slick.jdbc.JdbcProfile
+
   import profile.api._
   // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
   lazy val schema: profile.SchemaDescription = Array(McAccount.schema, McAccountHobby.schema).reduceLeft(_ ++ _)
-  @deprecated("Use .schema instead of .ddl", "3.0")
-  def ddl = schema
+  @deprecated("Use .schema instead of .ddl", "3.0") def ddl = schema
 
   /** Entity class storing rows of table McAccount
     *
@@ -70,10 +69,9 @@ trait Tables {
                                      e2: GR[String],
                                      e3: GR[Option[String]],
                                      e4: GR[Option[java.sql.Date]],
-                                     e5: GR[java.util.UUID]): GR[McAccountRow] = GR {
-    prs =>
-      import prs._
-      McAccountRow.tupled((<<[Long], <<?[java.sql.Timestamp], <<[String], <<[String], <<[String], <<?[String], <<?[java.sql.Date], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<[java.util.UUID], <<?[String], <<?[String], <<?[java.sql.Timestamp]))
+                                     e5: GR[java.util.UUID]): GR[McAccountRow] = GR { prs =>
+    import prs._
+    McAccountRow.tupled((<<[Long], <<?[java.sql.Timestamp], <<[String], <<[String], <<[String], <<?[String], <<?[java.sql.Date], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<?[String], <<[java.util.UUID], <<?[String], <<?[String], <<?[java.sql.Timestamp]))
   }
 
   /** Table description of table mc_account. Objects of this class serve as prototypes for rows in queries.
@@ -144,10 +142,9 @@ trait Tables {
   implicit def GetResultMcAccountHobbyRow(implicit e0: GR[Long],
                                           e1: GR[Option[java.sql.Timestamp]],
                                           e2: GR[Option[Long]],
-                                          e3: GR[Option[String]]): GR[McAccountHobbyRow] = GR {
-    prs =>
-      import prs._
-      McAccountHobbyRow.tupled((<<[Long], <<?[java.sql.Timestamp], <<?[Long], <<?[String]))
+                                          e3: GR[Option[String]]): GR[McAccountHobbyRow] = GR { prs =>
+    import prs._
+    McAccountHobbyRow.tupled((<<[Long], <<?[java.sql.Timestamp], <<?[Long], <<?[String]))
   }
 
   /** Table description of table mc_account_hobby. Objects of this class serve as prototypes for rows in queries. */
